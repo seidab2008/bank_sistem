@@ -1,4 +1,4 @@
-import client_db as db
+import client_db
 import datetime
 
 
@@ -6,46 +6,46 @@ cart_number,check_number = 0,0
 def cash():
     global cart_number,check_number
     cash = int(input('value :'))
-    if cash > db.client_d[cart_number]['balance']:
+    if cash > client_db.database[cart_number]['balance']:
        print('not enough money!')
     else:
-       db.client_d[cart_number]['balance'] -= cash
+       client_db[cart_number]['balance'] -= cash
        check_number += 1
        time = datetime.datetime.now()
        status = 'Cash out'
-       cash_list = [check_number,time,status,db.client_d[cart_number]['name'],cash]
-       db.client_d[cart_number]['check'].append(cash_list)
+       cash_list = [check_number,time,status,client_db[cart_number]['name'],cash]
+       client_db.database[cart_number]['check'].append(cash_list)
 def pay():
     global cart_number, check_number
     pay = int(input('value :'))
-    if pay > db.client_d[cart_number]['balance']:
+    if pay > client_db[cart_number]['balance']:
         print('not enough money!')
     else:
-        db.client_d[cart_number]['balance'] -= pay
+        client_db[cart_number]['balance'] -= pay
         check_number += 1
         time = datetime.datetime.now()
         status = 'Pay'
-        pay_list = [check_number,time,status,db.client_d[cart_number]['none'],pay]
-        db.client_d[cart_number]['check'].append(pay_list)
+        pay_list = [check_number,time,status,client_db[cart_number]['none'],pay]
+        client_db[cart_number]['check'].append(pay_list)
 
 def tup_up():
     global cart_number,check_number
     tup = int(input('money :'))
-    db.client_d[cart_number]['balance'] += tup
+    client_db[cart_number]['balance'] += tup
     check_number += 1
     time = datetime.datetime.now()
     status = 'Top up'
-    tup_list = [check_number,time,status,db.client_d[cart_number]['name'],tup]
-    db.client_d[cart_number]['check'].append(tup_list)
+    tup_list = [check_number,time,status,client_db[cart_number]['name'],tup]
+    client_db.database[cart_number]['check'].append(tup_list)
 
 def balance():
     print('\n')
-    print(f"{db.client_d[cart_number]['balance']}.TMT")
+    print(f"{client_db[cart_number]['balance']}.TMT")
 
 def check_history():
     global cart_number
     check_lst = ['Check #','Date','Status','Name','Sum']
-    for i in db.client_d[cart_number]['check']:
+    for i in client_db[cart_number]['check']:
         check_dict = dict(zip(check_lst,i))
         for k,v in check_dict.items():
             print(f'{k},{v}')
@@ -56,14 +56,14 @@ def bank():
     while True:
        tryes = 3
        cart_number = int(input('cart_number :'))
-       if cart_number in db.client_d and bool(db.client_d[cart_number]['status']):
+       if cart_number in client_db and bool(client_db[cart_number]['status']):
            while True:
                 if tryes == 0:
-                   db.client_d[cart_number]['status'] = False 
+                   client_db[cart_number]['status'] = False 
                    print('your cart is blocked:')
                    break
-                pin_code == int(input('pin code :'))
-                if pin_code == db.client_d[cart_number]['pin']:
+                client_db == int(input('pin code :'))
+                if pin_code == client_db[cart_number]['pin']:
                     while True:
                        function = int(input('1.Cash\n2.Pay\n3.Balance\n4.Check history\n5.Tup up\n6.Exit\n    :'))
                        if function >= 6:
